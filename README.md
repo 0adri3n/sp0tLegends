@@ -33,7 +33,7 @@ Here are some of the best features of the project:
 
 <p></p>
 
-<p>Before everything, u'll need to setup a Spotify API key. It's easy and fast don't worry !</p>
+<p>Before everything, u'll need to setup a Spotify API key. It's easy, fast and needed only once don't worry !</p>
 
 <p>Navigate to <a href="https://developer.spotify.com/dashboard">Spotify Developer Dashboard</a> and connect with your Spotify (you need Premium !)</p>
 
@@ -52,7 +52,7 @@ Here are some of the best features of the project:
 
 ![image](https://github.com/user-attachments/assets/d745b376-8d4d-4601-b415-2137c09215db)
 
-<p>Last step, don't worry. Download the <a href="https://github.com/0adri3n/sp0tLegends/releases">lateste release</a> of sp0tLegends. Extract it and navigate througt it to edit ```spotify.json```</p>
+Last step, don't worry. Download the <a href="https://github.com/0adri3n/sp0tLegends/releases">lateste release</a> of sp0tLegends. Extract it and navigate througt it to edit ```spotify.json```
 
 ![image](https://github.com/user-attachments/assets/6071097a-9280-42b4-865d-dac5552af672)
 
