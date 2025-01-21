@@ -71,7 +71,7 @@ Last step, don't worry. Download the <a href="https://github.com/0adri3n/sp0tLeg
 <p>1. Clone the repository:</p>
 
 ```bash
-git clone [https://github.com/YOUR_GITHUB_REPO.git](https://github.com/0adri3n/sp0tLegends.git)
+git clone https://github.com/0adri3n/sp0tLegends.git
 ```
 
 <p>2. Navigate to the project directory and install dependencies:</p>
