@@ -1,5 +1,5 @@
 {
-    "clientId": "4c1834d776ab45f795dd54c726323dd7",
-    "clientSecret": "3b97afa503824a08963d9bc3d5be125d",
+    "clientId": "your-client-id",
+    "clientSecret": "your-client-secret",
     "login_successful": false
 }
