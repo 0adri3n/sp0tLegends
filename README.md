@@ -62,7 +62,7 @@ Last step, don't worry. Download the <a href="https://github.com/0adri3n/sp0tLeg
 
 ![image](https://github.com/user-attachments/assets/94ef6cd1-780e-4ee3-b83f-f4971f0d1100)
 
-<p><b>You're good to go! 🎉 You can execute sp0tLegends.exe in the root directory. sp0tLegends is ready to go. Thanks for using !</b></p>
+<p><b>You're good to go! 🎉 You can execute sp0tLegends.exe in-game in the root directory. sp0tLegends is ready to go. Thanks for using !</b></p>
 
 ---
 
