@@ -1,0 +1,99 @@
+{
+  "name": "sp0tLegends",
+  "version": "22.3.13",
+  "description": "Spotify overlay for LoL",
+  "icon": "icon.ico",
+  "main": "dist/browser/index.js",
+  "author": {
+    "name": "0adri3n"
+  },
+  "license": "MIT",
+  "overwolf": {
+    "packages": [
+      "gep",
+      "overlay"
+    ]
+  },
+  "build": {
+    "nodeGypRebuild": false,
+    "appId": "com.github",
+    "asar": true,
+    "overwolf": {
+      "disableAdOptimization": true
+    },
+    "productName": "sp0tLegends",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "*.js",
+      "*.html",
+      "*.exe"
+    ],
+    "copyright": "Copyright 2023 Overwolf Ltd. + 0adri3n",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "publisherName": "Overwolf Ltd + 0adri3n",
+      "legalTrademarks": "Copyright 2023 Overwolf Ltd. + 0adri3n"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "scripts": {
+    "build:renderer": "webpack --config ./webpack.renderer.config.js",
+    "build:main": "webpack --config ./webpack.main.config.js",
+    "build": "yarn webpack --mode=development && yarn build:main && yarn build:renderer",
+    "build:dev": "yarn webpack --watch --mode=development",
+    "build:start": "yarn run build && ow-electron . ",
+    "start": "ow-electron .",
+    "build:ow-electron": "ow-electron-builder --c.extraMetadata.name=GameEventsTester --publish=never"
+  },
+  "devDependencies": {
+    "@overwolf/ow-electron": "latest",
+    "@overwolf/ow-electron-builder": "latest",
+    "@overwolf/ow-electron-packages-types": "^0.0.5",
+    "@types/express": "^5.0.0",
+    "@types/jquery": "^3.5.16",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.11.18",
+    "@types/node-fetch": "^2.6.12",
+    "copy-webpack-plugin": "^11.0.0",
+    "electron": "21.1.0",
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "jest-junit": "^15.0.0",
+    "jest-mock-extended": "^3.0.1",
+    "reflect-metadata": "^0.1.13",
+    "ts-jest": "^29.0.3",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.7.4",
+    "typescript-logging": "^2.0.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "wrapper-webpack-plugin": "^2.1.0"
+  },
+  "dependencies": {
+    "@spotify/web-api-ts-sdk": "^1.2.0",
+    "body-parser": "^1.20.3",
+    "electron-store": "^10.0.0",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2",
+    "querystring": "^0.2.1",
+    "yarn": "^1.22.22"
+  }
+}

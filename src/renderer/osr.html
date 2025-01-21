@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Controller</title>
+    <style>
+        body {
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            user-select: none;
+        }
+
+        #controller {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 10px;
+            width: 250px; /* Reduced width */
+            gap: 15px; /* Adjusted space between the image and the details */
+        }
+
+        img {
+            width: 50px; /* Reduced image size */
+            height: 50px; /* Reduced image size */
+            border-radius: 5px;
+            object-fit: cover;
+            cursor: move; /* Make the image draggable */
+            -webkit-app-region: drag; /* Enable dragging from the image */
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            color: white;
+            width: 180px; /* Adjust width to prevent overflow */
+        }
+
+        .details h3 {
+            margin: 0;
+            font-size: 18px; /* Adjusted title font size */
+            white-space: nowrap; /* Prevent line breaks */
+            overflow: hidden; /* Hide overflowing text */
+            text-overflow: ellipsis; /* Add ellipsis for overflow */
+        }
+
+        .details p {
+            margin: 0;
+            font-size: 14px; /* Adjusted artist font size */
+            color: #ccc;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px; /* Adjusted button spacing */
+            margin-top: 8px; /* Reduced top margin */
+        }
+
+        .controls button {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 4px 8px; /* Reduced padding for buttons */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div id="controller">
+        <!-- Draggable image on the left -->
+        <img src="https://via.placeholder.com/60" alt="Album Art">
+        
+        <!-- Details and controls on the right -->
+        <div class="details">
+            <h3>Very long song title that will get truncated if it exceeds the width</h3>
+            <p>Artist Name</p>
+            
+            <!-- Control buttons -->
+            <div class="controls">
+                <button id="prev">⏮</button>
+                <button id="play-pause">⏯</button>
+                <button id="next">⏭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require("electron");
+
+        document.getElementById("play-pause").addEventListener("click", () => {
+            ipcRenderer.send("spotify:playPause");
+        });
+
+        document.getElementById("next").addEventListener("click", () => {
+            ipcRenderer.send("spotify:next");
+        });
+
+        document.getElementById("prev").addEventListener("click", () => {
+            ipcRenderer.send("spotify:previous");
+        });
+    </script>
+</body>
+</html>

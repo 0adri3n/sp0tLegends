@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sp0tLegends</title>
+  <link rel="icon" href="./img/icon.png">
+  <style>
+    /* General styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #191414; /* Spotify black */
+      color: #1DB954; /* Spotify green */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Main container */
+    .container {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    /* Title */
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    /* Message */
+    p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+
+    /* Button styles */
+    .btn {
+      margin-top: 20px;
+      background-color: #1DB954;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background-color: #14843c; /* Darker green for hover */
+    }
+
+    .btn:active {
+      background-color: #0f6e32; /* Even darker green for active click */
+    }
+
+    /* Popup styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .popup input {
+      margin: 10px 0;
+      padding: 8px;
+      font-size: 1rem;
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .popup button {
+      background-color: #1DB954;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+
+    .popup button:hover {
+      background-color: #14843c;
+    }
+
+    .popup button:active {
+      background-color: #0f6e32;
+    }
+
+    /* Overlay behind popup */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>sp0tLegends</h1>
+    <p>
+      The Spotify overlay has been successfully registered and<br>
+      will now appear in game. Enjoy your music!
+    </p>
+    <button class="btn" id="github-btn">View Project on GitHub</button>
+    <button class="btn" id="edit-spotify-btn"></button>
+  </div>
+
+  <!-- Overlay for the popup -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Popup for editing credentials -->
+  <div class="popup" id="popup">
+    <h3>Edit Spotify Credentials</h3>
+    <input type="text" id="client-id-input" placeholder="Client ID" />
+    <input type="text" id="client-secret-input" placeholder="Client Secret" />
+    <button id="save-btn">Save</button>
+  </div>
+
+  <script>
+    const { shell, ipcRenderer } = require('electron');
+    const fs = require('fs');
+    const path = require('path');
+
+    const configPath = "http://localhost:8888/config/spotify.json";
+    const editConfUrl = "http://localhost:8888/edit_config";
+    const popup = document.getElementById('popup');
+    const overlay = document.getElementById('overlay');
+    const clientIdInput = document.getElementById('client-id-input');
+    const clientSecretInput = document.getElementById('client-secret-input');
+
+    // Show project on GitHub
+    document.getElementById("github-btn").addEventListener("click", () => {
+      const githubUrl = "https://github.com/0adri3n/sp0tLegends";
+      shell.openExternal(githubUrl);
+    });
+
+    // Show edit credentials popup
+    document.getElementById('edit-spotify-btn').addEventListener('click', () => {
+      overlay.style.display = 'block';
+      popup.style.display = 'block';
+      loadSpotifyConfig(); // Load the current config values
+    });
+
+    // Save credentials to the server using POST request
+    document.getElementById('save-btn').addEventListener('click', () => {
+      const clientId = clientIdInput.value.trim();
+      const clientSecret = clientSecretInput.value.trim();
+      console.log(JSON.stringify({ clientId, clientSecret }))
+      if (clientId && clientSecret) {
+        // Send POST request to save the config
+        fetch(editConfUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ clientId, clientSecret })
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('Credentials saved successfully!');
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+          } else {
+            alert('Error saving credentials');
+          }
+        })
+        .catch(error => {
+          console.error('Error saving credentials:', error);
+          alert('Failed to save credentials');
+        });
+      } else {
+        alert('Please fill in both fields!');
+      }
+    });
+
+    // Load current Spotify credentials from the server
+    function loadSpotifyConfig() {
+      fetch(configPath)
+        .then(response => response.json())
+        .then(data => {
+          clientIdInput.value = data.clientId || '';
+          clientSecretInput.value = data.clientSecret || '';
+        })
+        .catch(error => {
+          console.error("Error loading Spotify config:", error);
+        });
+    }
+
+    // Close the popup and overlay
+    overlay.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      popup.style.display = 'none';
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Sélectionner le bouton
+      const editSpotifyBtn = document.getElementById("edit-spotify-btn");
+
+      // Créer une balise <img>
+      const settingsImg = document.createElement("img");
+      settingsImg.src = "http://localhost:8888/img/settings-icon.png";  // Accéder à l'image via la route Express
+      settingsImg.alt = "Settings";  // Texte alternatif pour l'image
+      settingsImg.style.width = "24px";  // Définir la taille de l'image
+      settingsImg.style.height = "24px"; // Définir la taille de l'image
+      settingsImg.style.verticalAlign = "middle";  // Aligner l'image verticalement
+
+      // Ajouter l'image au bouton
+      editSpotifyBtn.appendChild(settingsImg);
+    });
+  </script>
+</body>
+</html>
