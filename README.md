@@ -1,4 +1,4 @@
-<h1 align="center" id="title">League Spotify Overlay</h1>
+<h1 align="center" id="title">sp0tLegends</h1>
 
 <p align="center"><img src="https://github.com/0adri3n/sp0tLegends/blob/master/src/renderer/img/icon.png" alt="project-image" width="200"></p>
 
